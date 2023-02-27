@@ -5,4 +5,21 @@ window.addEventListener("load", () => {
   // Set canvas size
   canvas.width = 1280
   canvas.height = 720
+
+  class Player {
+    constructor(game) {
+      this.game = game
+    }
+  }
+
+  class Game {
+    constructor(canvas) {
+      this.canvas = canvas
+      this.width = this.canvas.width
+      this.height = this.canvas.height
+      this.player = new Player(this)
+    }
+  }
+
+  const game = new Game(canvas)
 })
