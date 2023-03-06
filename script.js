@@ -122,8 +122,27 @@ window.addEventListener("load", () => {
     }
 
     init() {
-      for (let i = 0; i < this.numberOfObstacles; i++) {
-        this.obstacles.push(new Obstacle(this))
+      let attempts = 0
+
+      while (this.obstacles.length < this.numberOfObstacles && attempts < 500) {
+        const testObstacle = new Obstacle(this)
+
+        // Detect collision with other obstacles
+        const overlap = this.obstacles.some(obstacle => {
+          const dx = testObstacle.collisionX - obstacle.collisionX
+          const dy = testObstacle.collisionY - obstacle.collisionY
+          const distance = Math.hypot(dy, dx)
+
+          const sumOfRadii = testObstacle.collisionRadius + obstacle.collisionRadius
+
+          return distance < sumOfRadii
+        })
+
+        if (!overlap) {
+          this.obstacles.push(testObstacle)
+        } else {
+          attempts++
+        }
       }
     }
   }
