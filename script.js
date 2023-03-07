@@ -11,6 +11,17 @@ window.addEventListener("load", () => {
   ctx.lineWidth = 3
   ctx.strokeStyle = "white"
 
+
+  function checkCollision(a, b) {
+    const dx = a.collisionX - b.collisionX
+    const dy = a.collisionY - b.collisionY
+    const distance = Math.hypot(dy, dx)
+
+    const sumOfRadii = a.collisionRadius + b.collisionRadius
+
+    return [distance < sumOfRadii, distance, sumOfRadii, dx, dy]
+  }
+
   class Obstacle {
     constructor(game) {
       this.game = game
@@ -86,6 +97,19 @@ window.addEventListener("load", () => {
       }
       this.collisionX += this.speedX * this.speedModifier
       this.collisionY += this.speedY * this.speedModifier
+
+      // Check for collision with obstacles
+      this.game.obstacles.forEach((obstacle) => {
+        const [hasCollision, distance, sumOfRadii, dx, dy] = checkCollision(this, obstacle)
+
+        if (hasCollision) {
+          const unit_x = dx / distance
+          const unit_y = dy / distance
+
+          this.collisionX = obstacle.collisionX + (sumOfRadii + 1) * unit_x
+          this.collisionY = obstacle.collisionY + (sumOfRadii + 1) * unit_y
+        }
+      })
     }
   }
 
@@ -129,9 +153,10 @@ window.addEventListener("load", () => {
     }
 
     render(context) {
+      this.obstacles.forEach(obstacle => obstacle.draw(context))
+
       this.player.draw(context)
       this.player.update()
-      this.obstacles.forEach(obstacle => obstacle.draw(context))
     }
 
     init() {
