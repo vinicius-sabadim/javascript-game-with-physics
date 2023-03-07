@@ -24,11 +24,13 @@ window.addEventListener("load", () => {
       this.height = this.spriteHeight
       this.spriteX = this.collisionX - this.width * 0.5
       this.spriteY = this.collisionY - this.height * 0.5 - 70
+      this.frameX = Math.floor(Math.random() * 4)
+      this.frameY = Math.floor(Math.random() * 3)
     }
 
     draw(context) {
       // Draw the obstacle image
-      context.drawImage(this.image, 0, 0, this.width, this.height, this.spriteX, this.spriteY, this.width, this.height)
+      context.drawImage(this.image, this.width * this.frameX, this.height * this.frameY, this.width, this.height, this.spriteX, this.spriteY, this.width, this.height)
 
       // Draw the circle
       context.beginPath()
@@ -92,6 +94,7 @@ window.addEventListener("load", () => {
       this.canvas = canvas
       this.width = this.canvas.width
       this.height = this.canvas.height
+      this.topMargin = 260
       this.player = new Player(this)
       this.numberOfObstacles = 5
       this.obstacles = []
@@ -142,13 +145,18 @@ window.addEventListener("load", () => {
           const dx = testObstacle.collisionX - obstacle.collisionX
           const dy = testObstacle.collisionY - obstacle.collisionY
           const distance = Math.hypot(dy, dx)
+          const distanceBuffer = 100
 
-          const sumOfRadii = testObstacle.collisionRadius + obstacle.collisionRadius
+          const sumOfRadii = testObstacle.collisionRadius + obstacle.collisionRadius + distanceBuffer
 
           return distance < sumOfRadii
         })
 
-        if (!overlap) {
+        const margin = testObstacle.collisionRadius * 2
+
+        // Checks for overlap and also the collision with the edges
+        if (!overlap && testObstacle.spriteX > 0 && testObstacle.spriteX < this.width - testObstacle.width &&
+          testObstacle.collisionY > this.topMargin + margin && testObstacle.collisionY < this.height - margin) {
           this.obstacles.push(testObstacle)
         } else {
           attempts++
