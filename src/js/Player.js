@@ -57,6 +57,16 @@ class Player {
     else if (angle < 2.74) this.frameY = 5
   }
 
+  updatePositionConsideringBoundaries() {
+    // Horizontal boundaries
+    if (this.collisionX < this.collisionRadius) this.collisionX = this.collisionRadius
+    else if (this.collisionX > this.game.width - this.collisionRadius) this.collisionX = this.game.width - this.collisionRadius
+
+    // Vertical boundaries
+    if (this.collisionY < this.game.topMargin + this.collisionRadius) this.collisionY = this.game.topMargin + this.collisionRadius
+    else if (this.collisionY > this.game.height - this.collisionRadius) this.collisionY = this.game.height - this.collisionRadius
+  }
+
   update() {
     this.dx = this.game.mouse.x - this.collisionX
     this.dy = this.game.mouse.y - this.collisionY
@@ -77,6 +87,9 @@ class Player {
     // Update coordinates for the sprite
     this.spriteX = this.collisionX - this.width * 0.5
     this.spriteY = this.collisionY - this.height * 0.5 - 100
+
+    // Horizontal boundaries
+    this.updatePositionConsideringBoundaries()
 
     // Check for collision with obstacles
     this.game.obstacles.forEach((obstacle) => {

@@ -70,7 +70,7 @@ class Game {
         return distance < sumOfRadii
       })
 
-      const margin = testObstacle.collisionRadius * 2
+      const margin = testObstacle.collisionRadius * 3
 
       // Checks for overlap and also the collision with the edges
       if (!overlap && testObstacle.spriteX > 0 && testObstacle.spriteX < this.width - testObstacle.width &&
