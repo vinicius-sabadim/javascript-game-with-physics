@@ -5,7 +5,7 @@
 }
 
 #canvas1 {
-  background: url("assets/background.png");
+  background: url("../assets/background.png");
   left: 50%;
   position: absolute;
   top: 50%;

@@ -1,0 +1,27 @@
+{
+  "name": "javascript-game-with-physics",
+  "version": "1.0.0",
+  "description": "Project following the [video tutorial](https://www.youtube.com/watch?v=U34l-Xz5ynU) by [@Frankslaboratory](https://www.youtube.com/channel/UCEqc149iR-ALYkGM6TG-7vQ).",
+  "scripts": {
+    "watch": "webpack --watch",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vinicius-sabadim/javascript-game-with-physics.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vinicius-sabadim/javascript-game-with-physics/issues"
+  },
+  "homepage": "https://github.com/vinicius-sabadim/javascript-game-with-physics#readme",
+  "dependencies": {
+    "html-webpack-plugin": "^5.5.0",
+    "webpack": "^5.76.3"
+  },
+  "devDependencies": {
+    "webpack-cli": "^5.0.1"
+  }
+}
