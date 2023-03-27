@@ -11,9 +11,21 @@ class Player {
     this.dx = null
     this.dy = null
     this.speedModifier = 5
+    this.image = document.getElementById("bull")
+    this.spriteWidth = 255
+    this.spriteHeight = 255
+    this.width = this.spriteWidth
+    this.height = this.spriteHeight
+    this.spriteX = null
+    this.spriteY = null
+    this.frameX = 0
+    this.frameY = 4
   }
 
   draw(context) {
+    // Draw player image
+    context.drawImage(this.image, this.frameX * this.spriteWidth, this.frameY * this.spriteHeight, this.spriteWidth, this.spriteHeight, this.spriteX, this.spriteY, this.width, this.height)
+
     // Draw the circle
     context.beginPath()
     context.arc(this.collisionX, this.collisionY, this.collisionRadius, 0, Math.PI * 2)
@@ -30,9 +42,25 @@ class Player {
     context.stroke()
   }
 
+  updateSpriteAnimationUsingTargetedPosition(targetX, targetY) {
+    const angle = Math.atan2(targetY, targetX)
+
+    if (angle < -2.74 || angle > 2.74) this.frameY = 6
+    else if (angle < -1.96) this.frameY = 7
+    else if (angle < -1.17) this.frameY = 0
+    else if (angle < -0.39) this.frameY = 1
+    else if (angle < 0.39) this.frameY = 2
+    else if (angle < 1.17) this.frameY = 3
+    else if (angle < 1.96) this.frameY = 4
+    else if (angle < 2.74) this.frameY = 5
+  }
+
   update() {
     this.dx = this.game.mouse.x - this.collisionX
     this.dy = this.game.mouse.y - this.collisionY
+
+    this.updateSpriteAnimationUsingTargetedPosition(this.dx, this.dy)
+
     const distance = Math.hypot(this.dy, this.dx)
     if (distance > this.speedModifier) {
       this.speedX = this.dx / distance || 0
@@ -43,6 +71,10 @@ class Player {
     }
     this.collisionX += this.speedX * this.speedModifier
     this.collisionY += this.speedY * this.speedModifier
+
+    // Update coordinates for the sprite
+    this.spriteX = this.collisionX - this.width * 0.5
+    this.spriteY = this.collisionY - this.height * 0.5 - 100
 
     // Check for collision with obstacles
     this.game.obstacles.forEach((obstacle) => {
